@@ -2,6 +2,9 @@ package com.jpmc.service.strategy;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +17,9 @@ import com.jpmc.dao.StockMarketDao;
 import com.jpmc.dto.Input;
 import com.jpmc.dto.OperationTypeEnum;
 import com.jpmc.dto.Output;
-import com.jpmc.service.strategy.impl.DivedentCalculatorStrategy;
+import com.jpmc.dto.StockTypeEnum;
+import com.jpmc.persistence.Stock;
+import com.jpmc.service.strategy.impl.DividentCalculatorStrategy;
 import com.jpmc.util.TestData;
 
 /**
@@ -22,10 +27,10 @@ import com.jpmc.util.TestData;
  * Tests the DivedentCalculatorStrategy.java
  */
 @RunWith(MockitoJUnitRunner.class)
-public class DivedentCalculatorStrategyTest {
+public class DividentCalculatorStrategyTest {
 
 	@InjectMocks
-	private DivedentCalculatorStrategy strategy;
+	private DividentCalculatorStrategy strategy;
 	
 	@Mock
 	private StockMarketDao dao;
@@ -39,12 +44,14 @@ public class DivedentCalculatorStrategyTest {
     @Test
 	public void testPerformOperationForValidInput() throws Exception{
 
-		Input input = new Input(
-				OperationTypeEnum.CALCULATEDIVIDENTYIELD, TestData.getStockByName("GIN"), 100.0);
-		Output expectedResult = new Output(generateOutput(input));
-		strategy.setInput(input);
-		assertEquals(
-				"Expected result is "+expectedResult, expectedResult, strategy.performOperation());
+    	Collection<Stock> stocks = TestData.getAllStockMap().values();
+    	for(Stock stock : stocks){
+			Input input = new Input(OperationTypeEnum.CALCULATEDIVIDENTYIELD, stock, 100.0);
+			Output expectedResult = new Output(generateOutput(input));
+			strategy.setInput(input);
+			assertEquals(
+					"Expected result is "+expectedResult, expectedResult, strategy.performOperation());
+    	}
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -80,7 +87,11 @@ public class DivedentCalculatorStrategyTest {
 	
 	private String generateOutput(Input input) {
 
-		return getCommonDividentYieldResult(input)+getPreferredDividentResult(input);
+		String result = getCommonDividentYieldResult(input);
+		if(input.getStock().getStockType().equals(StockTypeEnum.Preffered)){
+			result+=getPreferredDividentResult(input);
+		}
+		return result;
 	}
 	
 	private String getCommonDividentYieldResult(Input input) {

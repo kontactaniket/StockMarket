@@ -10,7 +10,7 @@ import com.jpmc.controller.StockMarketController;
 import com.jpmc.dao.StockMarketDao;
 import com.jpmc.service.StockMarketService;
 import com.jpmc.service.factory.OperationStrategyFactory;
-import com.jpmc.service.strategy.impl.DivedentCalculatorStrategy;
+import com.jpmc.service.strategy.impl.DividentCalculatorStrategy;
 import com.jpmc.service.strategy.impl.IdexCalculationStrategy;
 import com.jpmc.service.strategy.impl.PeRatioCalculatorStrategy;
 import com.jpmc.service.strategy.impl.TradeRecorderStrategy;
@@ -48,8 +48,8 @@ public class AppConfig {
 	}
 	
 	@Bean(name="DivedentCalculatorStrategy")
-	public DivedentCalculatorStrategy getDivedentCalculatorStrategy(){
-		return new DivedentCalculatorStrategy();
+	public DividentCalculatorStrategy getDivedentCalculatorStrategy(){
+		return new DividentCalculatorStrategy();
 	}
 	
 	@Bean(name="PeRatioCalculatorStrategy")

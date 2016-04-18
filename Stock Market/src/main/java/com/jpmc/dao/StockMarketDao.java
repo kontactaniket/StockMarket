@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.jpmc.persistence.Stock;
 import com.jpmc.persistence.Trade;
-import com.jpmc.service.strategy.impl.DivedentCalculatorStrategy;
 
 /**
  * @author Aniket Kulkarni
@@ -19,7 +18,7 @@ import com.jpmc.service.strategy.impl.DivedentCalculatorStrategy;
 @Repository
 public class StockMarketDao {
 
-	private final static Logger logger = Logger.getLogger(DivedentCalculatorStrategy.class);
+	private final static Logger logger = Logger.getLogger(StockMarketDao.class);
 	
 	private Map<String, Stock> stockMap;
 	private Map<String, List<Trade>> tradeMap;

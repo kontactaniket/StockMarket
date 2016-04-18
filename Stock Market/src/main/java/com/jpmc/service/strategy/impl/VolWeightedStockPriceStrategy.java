@@ -35,7 +35,6 @@ public class VolWeightedStockPriceStrategy implements Strategy {
 	/* (non-Javadoc)
 	 * @see com.jpmc.service.strategy.abs.Strategy#setInput(com.jpmc.dto.Input)
 	 */
-	@Override
 	public void setInput(Input input) {
 		this.input = input;
 	}
@@ -49,7 +48,6 @@ public class VolWeightedStockPriceStrategy implements Strategy {
 	 * @return Output 
 	 * @throws NullPointerException
 	 */
-	@Override
 	public Output performOperation() throws Exception {
 
 		Double priceQuantity = 0D;

@@ -2,6 +2,8 @@ package com.jpmc.service.strategy;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,12 +42,15 @@ public class PeRatioCalculatorStrategyTest {
     @Test
 	public void testPerformOperationForValidInput() throws Exception{
 
-		Input input = new Input(
-				OperationTypeEnum.CALCULATEPERATIO, TestData.getStockByName("GIN"), 100.0);
-		Output expectedResult = new Output(generateOutput(input));
-		strategy.setInput(input);
-		assertEquals(
-				"Expected result is "+expectedResult, expectedResult, strategy.performOperation());
+    	Collection<Stock> stocks = TestData.getAllStockMap().values();
+    	for(Stock stock : stocks){
+			Input input = new Input(
+					OperationTypeEnum.CALCULATEPERATIO, stock, 100.0);
+			Output expectedResult = new Output(generateOutput(input));
+			strategy.setInput(input);
+			assertEquals(
+					"Expected result is "+expectedResult, expectedResult, strategy.performOperation());
+    	}
 	}
 
 	@Test(expected = Exception.class)
@@ -71,18 +76,11 @@ public class PeRatioCalculatorStrategyTest {
 		strategy.performOperation();
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void testPerformOperationForInavlidFixedDividend() throws Exception {
-
-		Stock stock = dao.getStock("GIN");
-		stock.setFixedDivident(null);
-		strategy.setInput(new Input(
-				OperationTypeEnum.CALCULATEPERATIO, null, 100.0));
-		strategy.performOperation();
-	}
-	
 	private String generateOutput(Input input) {
 
+		if(input.getStock().getLastDivident() == null || input.getStock().getLastDivident() == 0){
+			return "No dividend available. P/E ratio can not be calculated!!!";
+		}
 		Double peRatio = input.getPrice()/input.getStock().getLastDivident();
 		return "\nP/E ratio of Stock "
 				+input.getStock().getStockName()+" for the price "+input.getPrice()+" is "+peRatio;

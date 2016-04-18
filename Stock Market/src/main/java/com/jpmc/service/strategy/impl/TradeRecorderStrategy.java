@@ -33,7 +33,6 @@ public class TradeRecorderStrategy implements Strategy {
 	/* (non-Javadoc)
 	 * @see com.jpmc.service.strategy.abs.Strategy#setInput(com.jpmc.dto.Input)
 	 */
-	@Override
 	public void setInput(Input input) {
 
 		this.input = input;
@@ -47,7 +46,6 @@ public class TradeRecorderStrategy implements Strategy {
 	 * @return Output 
 	 * @throws NullPointerException, Exception
 	 */
-	@Override
 	public Output performOperation() throws Exception {
 
 		ValidateInput();

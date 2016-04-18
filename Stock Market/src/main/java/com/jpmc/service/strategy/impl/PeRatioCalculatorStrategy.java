@@ -18,7 +18,6 @@ public class PeRatioCalculatorStrategy implements Strategy {
 	/* (non-Javadoc)
 	 * @see com.jpmc.service.strategy.abs.Strategy#setInput(com.jpmc.dto.Input)
 	 */
-	@Override
 	public void setInput(Input input) {
 		this.input = input;
 	}
@@ -32,7 +31,6 @@ public class PeRatioCalculatorStrategy implements Strategy {
 	 * @return Output 
 	 * @throws NullPointerException, IllegalArgumentException
 	 */
-	@Override
 	public Output performOperation() throws Exception {
 
 		ValidateInput();
@@ -41,6 +39,9 @@ public class PeRatioCalculatorStrategy implements Strategy {
 
 	private String getPeRationResult() {
 		logger.debug("Calculating P/E ratio...");
+		if(input.getStock().getLastDivident() == null || input.getStock().getLastDivident() == 0){
+			return "No dividend available. P/E ratio can not be calculated!!!";
+		}
 		Double peRatio = input.getPrice()/input.getStock().getLastDivident();
 		logger.info("P/E ratio for stock "+input.getStock().getStockName()+" is "+peRatio);
 		return "\nP/E ratio of Stock "
@@ -58,9 +59,6 @@ public class PeRatioCalculatorStrategy implements Strategy {
 		}if(input.getPrice() == null || 1>input.getPrice()){
 			logger.error("Price is null or less than 1...");
 			throw new IllegalArgumentException("Invalid price !!!");
-		}if(input.getStock().getLastDivident() == null || input.getStock().getLastDivident() == 0.0){
-			logger.error("Fixed Dividend is null or 0...");
-			throw new IllegalArgumentException("Invalid dividend!!!");
 		}
 	}
 }

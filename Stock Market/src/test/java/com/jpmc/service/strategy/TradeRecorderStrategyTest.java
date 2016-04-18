@@ -2,6 +2,8 @@ package com.jpmc.service.strategy;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,7 @@ import com.jpmc.dao.StockMarketDao;
 import com.jpmc.dto.Input;
 import com.jpmc.dto.OperationTypeEnum;
 import com.jpmc.dto.Output;
+import com.jpmc.persistence.Stock;
 import com.jpmc.service.strategy.impl.TradeRecorderStrategy;
 import com.jpmc.util.TestData;
 
@@ -39,12 +42,14 @@ public class TradeRecorderStrategyTest {
     @Test
 	public void testPerformOperationForValidInput() throws Exception{
 
-		Input input = new Input(OperationTypeEnum.RECORDTRADE, 
-				TestData.getStockByName("GIN"), 1000D, 10, true);
-		Output expectedResult = generateOutput(input);
-		strategy.setInput(input);
-		assertEquals(
-				"Expected result is "+expectedResult, expectedResult, strategy.performOperation());
+    	Collection<Stock> stocks = TestData.getAllStockMap().values();
+    	for(Stock stock : stocks){
+	    	Input input = new Input(OperationTypeEnum.RECORDTRADE,stock, 1000D, 10, true);
+			Output expectedResult = generateOutput(input);
+			strategy.setInput(input);
+			assertEquals(
+					"Expected result is "+expectedResult, expectedResult, strategy.performOperation());
+    	}
 	}
 
 	@Test(expected = NullPointerException.class)

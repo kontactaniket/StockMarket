@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.jpmc.dto.Input;
 import com.jpmc.dto.OperationTypeEnum;
 import com.jpmc.service.strategy.abs.Strategy;
-import com.jpmc.service.strategy.impl.DivedentCalculatorStrategy;
+import com.jpmc.service.strategy.impl.DividentCalculatorStrategy;
 import com.jpmc.service.strategy.impl.IdexCalculationStrategy;
 import com.jpmc.service.strategy.impl.PeRatioCalculatorStrategy;
 import com.jpmc.service.strategy.impl.TradeRecorderStrategy;
@@ -38,7 +38,7 @@ public class OperationStrategyFactory {
 	
 		/* Based on Operation Enum the appropriate Strategy is instantiated. */
 		if(input.getOperationType().equals(OperationTypeEnum.CALCULATEDIVIDENTYIELD)){
-			strategy = (DivedentCalculatorStrategy)context.getBean("DivedentCalculatorStrategy");
+			strategy = (DividentCalculatorStrategy)context.getBean("DivedentCalculatorStrategy");
 			strategy.setInput(input);
 			logger.info("Strategy selected : "+strategy.getClass().getName());
 			return strategy;

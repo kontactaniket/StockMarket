@@ -4,21 +4,21 @@ import org.apache.log4j.Logger;
 
 import com.jpmc.dto.Input;
 import com.jpmc.dto.Output;
+import com.jpmc.dto.StockTypeEnum;
 import com.jpmc.service.strategy.abs.Strategy;
 
 /**
  * @author Aniket Kulkarni
  * This class is Strategy to calculate Index for calculating the Dividend
  */
-public class DivedentCalculatorStrategy implements Strategy {
+public class DividentCalculatorStrategy implements Strategy {
 
-	private final static Logger logger = Logger.getLogger(DivedentCalculatorStrategy.class);
+	private final static Logger logger = Logger.getLogger(DividentCalculatorStrategy.class);
 	private Input input; 
 	
 	/* (non-Javadoc)
 	 * @see com.jpmc.service.strategy.abs.Strategy#setInput(com.jpmc.dto.Input)
 	 */
-	@Override
 	public void setInput(Input input) {
 		this.input = input;
 	}
@@ -32,13 +32,15 @@ public class DivedentCalculatorStrategy implements Strategy {
 	 * @return Output 
 	 * @throws NullPointerException, IllegalArgumentException
 	 */
-	@Override
 	public Output performOperation() 
 			throws NullPointerException, IllegalArgumentException {
 		
 		logger.debug("Calculating dividend...");
 		ValidateInput();
-		String result = getCommonDividentYieldResult()+getPreferredDividentResult();
+		String result = getCommonDividentYieldResult();
+		if(input.getStock().getStockType().equals(StockTypeEnum.Preffered)){
+			result+=getPreferredDividentResult();
+		}
 		logger.info("Dividend calculated  : "+result);
 		return new Output(result);
 	}

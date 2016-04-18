@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Before;
@@ -19,6 +20,7 @@ import com.jpmc.dao.StockMarketDao;
 import com.jpmc.dto.Input;
 import com.jpmc.dto.OperationTypeEnum;
 import com.jpmc.dto.Output;
+import com.jpmc.persistence.Stock;
 import com.jpmc.persistence.Trade;
 import com.jpmc.service.strategy.impl.VolWeightedStockPriceStrategy;
 import com.jpmc.util.TestData;
@@ -45,14 +47,15 @@ public class VolWeightedStockPriceStrategyTest {
     @Test
 	public void testPerformOperationForValidInput() throws Exception{
 
-        when(dao.getAllTradesForStock(TestData.getStockByName(
-        		"GIN"))).thenReturn(TestData.getTradeListForStock("GIN"));
-		Input input = new Input(
-				OperationTypeEnum.CALCULATEPERATIO, TestData.getStockByName("GIN"), 100.0);
-		Output expectedResult = generateOutput(input);
-		strategy.setInput(input);
-		assertEquals(
-				"Expected result is "+expectedResult, expectedResult, strategy.performOperation());
+    	Collection<Stock> stocks = TestData.getAllStockMap().values();
+    	for(Stock stock : stocks){
+            when(dao.getAllTradesForStock(stock)).thenReturn(TestData.getTradeListForStock(stock.getStockName()));
+			Input input = new Input(OperationTypeEnum.CALCULATEPERATIO, stock, 100.0);
+			Output expectedResult = generateOutput(input);
+			strategy.setInput(input);
+			assertEquals(
+					"Expected result is "+expectedResult, expectedResult, strategy.performOperation());
+    	}
 	}
 
 	@Test(expected = NullPointerException.class)
