@@ -71,12 +71,12 @@ public class IdexCalculationStrategyTest {
 		Double tradePrice = 0.0;
 		List<Trade> trades = TestData.getAllTradeList();
 		for(Trade trade : trades){
-			tradePrice+=tradePrice+trade.getTradedPrice();
+			tradePrice+=trade.getTradedPrice();
 			tradeCount++;
 		}
 		if(tradeCount == 0){
 			return new Output("No trade recorded for GBCE.");
 		}
-		return new Output("GBCE All Share Index is "+Math.pow(tradePrice, (1/tradeCount)));
+		return new Output("GBCE All Share Index is "+Math.pow(tradePrice, (1D/tradeCount)));
 	}
 }
