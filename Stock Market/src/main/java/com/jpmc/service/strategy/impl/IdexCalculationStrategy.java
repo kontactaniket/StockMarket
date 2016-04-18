@@ -59,7 +59,7 @@ public class IdexCalculationStrategy implements Strategy {
 			List<Trade> trades = dao.getAllTradesForGBCE();
 			logger.info("Number of trades "+trades.size());
 			for(Trade trade : trades){
-				tradePrice+=tradePrice+trade.getTradedPrice();
+				tradePrice+=trade.getTradedPrice();
 				tradeCount++;
 			}
 		}
@@ -68,6 +68,6 @@ public class IdexCalculationStrategy implements Strategy {
 			return new Output("No trade recorded for GBCE.");
 		}
 		logger.debug("Calculating the Index...");
-		return new Output("GBCE All Share Index is "+Math.pow(tradePrice, (1/tradeCount)));
+		return new Output("GBCE All Share Index is "+Math.pow(tradePrice, (1D/tradeCount)));
 	 }
 }
